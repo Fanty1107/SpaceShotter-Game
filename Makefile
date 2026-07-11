@@ -3,7 +3,7 @@ CXXFLAGS = -I./include
 LDFLAGS = -L./lib -lraylib -lglfw -lGL -lX11 -lpthread -lXi -lXrandr
 
 
-SOURCES = src/main.cc
+SOURCES = src/main.cc src/gameObjects.cc
 
 TARGET = main
 

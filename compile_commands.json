@@ -1,0 +1,26 @@
+[
+  {
+    "file": "src/main.cc",
+    "arguments": [
+      "/usr/bin/clang++",
+      "src/main.cc",
+      "-o",
+      "main",
+      "-I./include"
+    ],
+    "directory": "/home/fanty/Projetos/raylib-space",
+    "output": "main"
+  },
+  {
+    "file": "src/gameObjects.cc",
+    "arguments": [
+      "/usr/bin/clang++",
+      "src/gameObjects.cc",
+      "-o",
+      "main",
+      "-I./include"
+    ],
+    "directory": "/home/fanty/Projetos/raylib-space",
+    "output": "main"
+  }
+]
