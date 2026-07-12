@@ -22,5 +22,17 @@
     ],
     "directory": "/home/fanty/Projetos/raylib-space",
     "output": "main"
+  },
+  {
+    "file": "src/raygui.cc",
+    "arguments": [
+      "/usr/bin/clang++",
+      "src/raygui.cc",
+      "-o",
+      "main",
+      "-I./include"
+    ],
+    "directory": "/home/fanty/Projetos/raylib-space",
+    "output": "main"
   }
 ]
