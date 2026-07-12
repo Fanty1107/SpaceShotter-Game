@@ -1,7 +1,5 @@
 #include "gameObjects.h"
 
-
-
 Background::Background() {
     background = LoadTexture("assets/BG.png");
     src = {0.0f, 0.0f, BACKGROUND_SIZE, BACKGROUND_SIZE};

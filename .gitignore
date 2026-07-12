@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/linux,c++,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,c++,visualstudiocode
 main
+include/raygui.h
 ### C++ ###
 # Prerequisites
 *.d
