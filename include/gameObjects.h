@@ -26,5 +26,15 @@ public:
     Player();
     Texture2D sprite;
     Vector2 posV;
+    Rectangle collider;
     float speed;
+    float fireRate;
+    float fireTimer;
+};
+struct Shot {
+    Shot(Vector2 pos, float w, float h);
+    Vector2 posV;
+    Rectangle collider;
+    float speed;
+
 };
