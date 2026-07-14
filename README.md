@@ -1,1 +1,1 @@
-<video src="video/demo_spaceRaylib.mp4" width="320" controls></video>   
+<video src="https://github.com/Fanty1107/SpaceShotter-Game/tree/main/video" width="320" controls></video>   
