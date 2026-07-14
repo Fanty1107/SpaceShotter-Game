@@ -1,12 +1,10 @@
-#include "raylib.h"
 #include "game.hpp"
 
 int main() {
-    
+    //TODO LATER IMPROVE GAMEOVER AND MENU SCREEN 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Space Shooter");
-    SetTargetFPS(60);
+    SetTargetFPS(FPS);
 
-    
     Game game;
     game.Initialize();
 
@@ -14,9 +12,7 @@ int main() {
         game.Update();
         game.Draw();
     }
-
     game.Unload();
     CloseWindow();
-    
     return 0;
 }

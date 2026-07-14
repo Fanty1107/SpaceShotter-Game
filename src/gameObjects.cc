@@ -1,4 +1,6 @@
 #include "gameObjects.hpp"
+#include <raylib.h>
+#include <vector>
 
 // --- BACKGROUND ---
 void Background::Load() {
@@ -12,13 +14,14 @@ void Background::Draw() { DrawTexturePro(background, src, dest, origin, 0.0f, co
 void Background::Unload() { UnloadTexture(background); }
 
 // --- SHOT ---
-Shot::Shot(Vector2 pos, float w, float h) {
+Shot::Shot(Vector2 pos, float w, float h, float directionY) {
     posV = pos;
     collider = {posV.x, posV.y, w, h};
     speed = 1000.0f;
+    dirY = directionY;
 }
 void Shot::Update(float deltaTime) {
-    posV.y -= speed * deltaTime;
+    posV.y += (speed * dirY) * deltaTime;
     collider.x = posV.x;
     collider.y = posV.y;
 }
@@ -33,10 +36,15 @@ Player::Player() {
     speed = 400.0f;
     fireRate = 0.3f;
     fireTimer = 0.0f;
+
+    hp = 5;
+    blinkTimer = 0.0f;
+    isDead = false;
 }
 
 void Player::Load() {
     sprite = LoadTexture("assets/Player/player_b_m.png");
+    spriteWhite = LoadTexture("assets/Player/player_b_m_white.png");
     collider = {posV.x, posV.y, (float)sprite.width, (float)sprite.height};
 
     // Load Animations
@@ -54,6 +62,9 @@ void Player::Load() {
 }
 
 void Player::Update(float deltaTime, std::vector<Shot>& plasmas, Texture2D& plasmaSprite) {
+    if(isDead) return;
+    if(blinkTimer > 0.0f) blinkTimer -= deltaTime;
+
     animL.animationUpdate(deltaTime);
     animR.animationUpdate(deltaTime);
     fireTimer += deltaTime;
@@ -83,27 +94,86 @@ void Player::Update(float deltaTime, std::vector<Shot>& plasmas, Texture2D& plas
 
     // Tiro
     if ((IsKeyDown(KEY_SPACE) && fireTimer >= fireRate)) {
-        Vector2 startPos = { 
-            posV.x + (float)sprite.width/2 - (float)plasmaSprite.width/2, 
-            posV.y 
-        };
-        plasmas.push_back(Shot(startPos, (float)plasmaSprite.width, (float)plasmaSprite.height));
+        Vector2 startPos = { posV.x + (float)sprite.width/2 - (float)plasmaSprite.width/2, posV.y };
+        plasmas.push_back(Shot(startPos, (float)plasmaSprite.width, (float)plasmaSprite.height, -1.0f));
         fireTimer = 0.0f;
     }
 }
 
 void Player::Draw() {
+    if(isDead) return;
+
+    bool isFlashing = (blinkTimer > 0.0f) && ((int)(blinkTimer * 10) % 2 == 0);
+    if (isFlashing) {
+        DrawTextureV(spriteWhite, posV, RAYWHITE);
+    }
+    else{
+    
     if (direction == LEFT) {
         DrawTextureV(animL.getCurrentFrame(), posV, RAYWHITE);
     } else if (direction == RIGHT) {
         DrawTextureV(animR.getCurrentFrame(), posV, RAYWHITE);
     } else {
         DrawTextureV(sprite, posV, RAYWHITE);
+        }
+
     }
 }
 
 void Player::Unload() {
     UnloadTexture(sprite);
+    UnloadTexture(spriteWhite);
     for (auto& tex : animL.frames) UnloadTexture(tex);
     for (auto& tex : animR.frames) UnloadTexture(tex);
 }
+
+// --- ENEMY ---
+Enemy::Enemy(float startX) {
+    posV = {startX, -50.0f}; //random position will be set later
+    collider = {posV.x, posV.y, 0,0};
+    speed = 200.0f;
+    fireRate = 0.6f;
+    fireTimer = 0.0f;
+    hp = 2;
+    blinkTimer = 0.0f;
+}
+
+void Enemy::Update(float deltaTime, std::vector<Shot>& plasmas, Texture2D& plasmaSprite, 
+                   Texture2D& refSprite) {
+    if(blinkTimer > 0.0f) blinkTimer -= deltaTime;
+
+    fireTimer += deltaTime; 
+    //mov down
+    posV.y += speed * deltaTime;
+    
+
+    // Colisão Matemática com as bordas da tela (Muito mais leve que retângulos)
+    if (posV.x < 0) posV.x = 0;
+    if (posV.x > SCREEN_WIDTH - refSprite.width) posV.x = SCREEN_WIDTH - refSprite.width;
+
+    collider.x = posV.x;
+    collider.y = posV.y;
+    collider.width = refSprite.width;
+    collider.height = refSprite.height;
+
+    // Tiro
+    if (fireTimer >= fireRate) { //enemy always shoots
+        Vector2 startPos = { 
+            posV.x + (float)refSprite.width/2 - (float)plasmaSprite.width/2, 
+            posV.y + (float)refSprite.height
+        };
+        Shot enemyShot(startPos, (float)plasmaSprite.width, (float)plasmaSprite.height, 1.0f);
+        enemyShot.speed = 400.0f; 
+        plasmas.push_back(enemyShot);
+        fireTimer = 0.0f;
+    }
+}
+void Enemy::Draw(Texture2D& refSprite, Texture2D& refSpriteWhite) {
+    bool isFlashing = (blinkTimer > 0.0f) && ((int)(blinkTimer * 10) % 2 == 0);
+    DrawTextureV(refSprite, posV, RAYWHITE);
+    if (isFlashing) {
+        // Desenha a silhueta branca
+        DrawTextureV(refSpriteWhite, posV, RAYWHITE);
+    }
+}
+

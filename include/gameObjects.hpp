@@ -8,6 +8,7 @@
 #define SCREEN_HEIGHT 800.0f
 #define PLAYER_X SCREEN_WIDTH/2.0f
 #define PLAYER_Y SCREEN_HEIGHT/2.0f
+#define FPS 60
 #define FONT_SIZE 30
 
 enum Direction { LEFT, RIGHT, UPDOWN };
@@ -25,13 +26,14 @@ public:
 };
 
 struct Shot {
-    Shot(Vector2 pos, float w, float h);
+    Shot(Vector2 pos, float w, float h, float directionY);
     void Update(float deltaTime);
     void Draw(Texture2D& sprite);
     
     Vector2 posV;
     Rectangle collider;
     float speed;
+    float dirY;
 };
 
 class Player {
@@ -43,6 +45,7 @@ public:
     void Unload();
 
     Texture2D sprite;
+    Texture2D spriteWhite;
     Vector2 posV;
     Rectangle collider;
     int direction;
@@ -50,11 +53,29 @@ public:
     float fireRate;
     float fireTimer;
 
+    int hp;
+    float blinkTimer;
+    bool isDead;
+
     MultiImageAnimation animL;
     MultiImageAnimation animR;
 };
 
 class Enemy {
 public:
-    //implement later
+    Enemy(float startX);
+  
+    void Update(float deltaTime, std::vector<Shot>& plasmas, Texture2D& plasmaSprite, 
+               Texture2D& refSprite);
+    void Draw(Texture2D& refSprite , Texture2D& refSpriteWhite);
+
+    Vector2 posV;
+    Rectangle collider;
+    int direction;
+    float speed;
+    float fireRate;
+    float fireTimer;
+
+    int hp;
+    float blinkTimer;
 };
