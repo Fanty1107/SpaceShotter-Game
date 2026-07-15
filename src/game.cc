@@ -2,8 +2,7 @@
 #include "animation.hpp"
 #include "gameObjects.hpp"
 #include "raygui.h"
-#include <raylib.h>
-#include <vector>
+
 
 Game::Game() {
     gameLoop = false;

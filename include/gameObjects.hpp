@@ -1,7 +1,6 @@
 #pragma once
-#include "raylib.h"
 #include "animation.hpp"
-#include <vector>
+
 
 #define BACKGROUND_SIZE 800.0f
 #define SCREEN_WIDTH 800.0f

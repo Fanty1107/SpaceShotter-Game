@@ -1,8 +1,6 @@
 #pragma once
 #include "animation.hpp"
 #include "gameObjects.hpp"
-#include <raylib.h>
-#include <vector>
 
 class Game {
 public:

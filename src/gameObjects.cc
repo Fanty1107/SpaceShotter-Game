@@ -1,7 +1,6 @@
 #include "gameObjects.hpp"
 #include "animation.hpp"
-#include <raylib.h>
-#include <vector>
+
 
 // --- BACKGROUND ---
 void Background::Load() {
