@@ -1,4 +1,5 @@
 #include "gameObjects.hpp"
+#include "animation.hpp"
 #include <raylib.h>
 #include <vector>
 
@@ -34,7 +35,7 @@ Player::Player() {
     posV = {PLAYER_X, PLAYER_Y};
     direction = UPDOWN;
     speed = 400.0f;
-    fireRate = 0.3f;
+    fireRate = 0.2f;
     fireTimer = 0.0f;
 
     hp = 5;
@@ -175,5 +176,20 @@ void Enemy::Draw(Texture2D& refSprite, Texture2D& refSpriteWhite) {
         // Desenha a silhueta branca
         DrawTextureV(refSpriteWhite, posV, RAYWHITE);
     }
+}
+
+Explosion::Explosion(Vector2 pos, MultiImageAnimation animation){
+    posV = pos;
+    anim = animation;
+
+    lifeTime = anim.frames.size() * anim.frameTime;
+}
+void Explosion::Update(float deltaTime) {
+    anim.animationUpdate(deltaTime);
+    lifeTime -= deltaTime;
+}
+
+void Explosion::Draw() {
+    DrawTextureV(anim.getCurrentFrame(), posV, RAYWHITE);
 }
 

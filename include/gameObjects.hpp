@@ -35,6 +35,15 @@ struct Shot {
     float speed;
     float dirY;
 };
+struct Explosion{
+    Explosion(Vector2 pos, MultiImageAnimation animation);
+    void Update(float deltaTime);
+    void Draw();
+
+    Vector2 posV;
+    MultiImageAnimation anim;
+    float lifeTime;
+};
 
 class Player {
 public:

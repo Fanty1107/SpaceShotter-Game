@@ -8,7 +8,7 @@ int main() {
     Game game;
     game.Initialize();
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !game.quitGame) {
         game.Update();
         game.Draw();
     }
